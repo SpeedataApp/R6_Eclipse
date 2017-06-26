@@ -157,12 +157,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.btn_init_dev:
                 int init = mIR6Manager.InitDevice();
-                etShow.append(init +"上电\n");
+                etShow.append("上电:"+init +"\n");
                 getLast();
                 break;
             case R.id.btn_release_dev:
                 mIR6Manager.ReleaseDevice();
-                etShow.append("下电\n");
+                etShow.append("已下电\n");
                 getLast();
                 break;
             case R.id.btn_search_card:
@@ -185,7 +185,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
             case R.id.btn_deselect://将卡片移除有效范围
                 int outCard = mIR6Manager.Deselect();
-                etShow.append(outCard +"\n");
+                etShow.append("移除卡片："+outCard+"\n");
                 getLast();
                 break;
 
@@ -210,29 +210,36 @@ public class MainActivity extends Activity implements View.OnClickListener {
             //命令输入
             case R.id.btn_cmd_in:
 
-                StringTokenizer tk = new StringTokenizer(etCmdInput.getText().toString());
-                int nums = tk.countTokens();
-                if(nums < 4)
-                {
-                    tvTitle.setText("APDU CMD shoud have more than 4 bytes");
-                    return;
-                }
+//                StringTokenizer tk = new StringTokenizer(etCmdInput.getText().toString());
+//                int nums = tk.countTokens();
+////                if(nums < 4)
+////                {
+////                    tvTitle.setText("APDU CMD shoud have more than 4 bytes");
+////                    return;
+////                }
+//
+//                int index = 0;
+//                byte[] cm = new byte[nums];
+//                while(tk.hasMoreTokens())
+//                {
+//                    try {
+//                        cm[index++] = (byte)Integer.parseInt(tk.nextToken(), 16);
+//                        if(index == nums)
+//                            break;
+//                    }catch (NumberFormatException p) {
+//                        tvTitle.setText("Invalid char, cmd should formed by HEX number");
+//                    }
+//                }
 
-                int index = 0;
-                byte[] cm = new byte[nums];
-                while(tk.hasMoreTokens())
-                {
-                    try {
-                        cm[index++] = (byte)Integer.parseInt(tk.nextToken(), 16);
-                        if(index == nums)
-                            break;
-                    }catch (NumberFormatException p) {
-                        tvTitle.setText("Invalid char, cmd should formed by HEX number");
-                    }
-                }
+            	 String tk = etCmdInput.getText().toString();
+                 int len = tk.length();
+                 if (len % 2 != 0) {
+                     etShow.append("请确认命令是否正确" + "\n");
+                     return;
+                 }
+                 byte[] cm = DataConversionUtils.HexString2Bytes(tk);
 
-
-                byte[] xs = mIR6Manager.ExecCmdInput(cm);//lib命令调用
+                byte[] xs = mIR6Manager.ExecCmdInput(cm); //lib命令调用
 
                 if(xs == null)
                 {
@@ -248,7 +255,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
                     {
                         res += String.format("%02x ", i);
                     }
-                    etShow.append(res);
+                    etShow.append(res + "\n");
                     getLast();
                     tvTitle.setText("execute cmd ok");
                 }

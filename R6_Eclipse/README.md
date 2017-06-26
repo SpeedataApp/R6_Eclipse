@@ -10,18 +10,18 @@
 	点击进入后，在界面上方有五种卡片的对应按钮。其中，选择CPU卡后，继续在本界面进行操作，选择其他卡类则会跳转到其相应的界面。
 ###开发说明<br>
 	使用Android Studio的开发人员可直接在开发工具中打开相应的源码，参考源码进行开发。
-	不使用源码则需要在build.gradle文件中添加：compile‘com.speedata:r6lib:1.3’
+	不使用源码则需要在build.gradle文件中添加：compile‘com.speedata:r6lib:1.4’
     使用Eclipse的开发人员，需要把“r6_eclipse”文件夹中的两个源码都导入开发工具，其中“r6lib”作为library，被r6程序源码调用。
 ###API文档<br>
 **·导入依赖库** <br>
 ---
 **AndroidStudio** build.gradle中的dependencies中添加
-compile ‘com.speedata：r6lib:1.3’
+compile ‘com.speedata：r6lib:1.4’
 示例：
 ```
  dependencies {
  compile 'com.android.support:appcompat-v7:25.0.1'
- compile 'com.speedata:r6lib:1.3'
+ compile 'com.speedata:r6lib:1.4'
 }
 ```
 **Eclipse** 导入libs库，资料包中的“r6_eclipse”文件夹内的r6lib是其依赖项目
