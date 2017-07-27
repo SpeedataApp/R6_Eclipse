@@ -116,7 +116,7 @@ public class Mifare_native {
 	
 	static {
 		System.loadLibrary("rc663nxp");
-		System.loadLibrary("package");
+		System.loadLibrary("packag");
 		System.loadLibrary("rc663mifare");
 	}
 }

@@ -135,7 +135,7 @@ public class Iso15693_native {
 	
 	static {
 		System.loadLibrary("rc663nxp");
-		System.loadLibrary("package");
+		System.loadLibrary("packag");
 		System.loadLibrary("rc663_15693");
 	}
 }
