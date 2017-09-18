@@ -3,9 +3,9 @@ package com.speedata.r6;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.text.Editable;
 import android.text.Selection;
-import android.text.Spannable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -15,20 +15,24 @@ import android.widget.TextView;
 import com.speedata.r6lib.IR6Manager;
 import com.speedata.r6lib.R6Manager;
 
-import java.util.StringTokenizer;
-
+import static com.speedata.r6.DataConversionUtils.HexString2Bytes;
 import static com.speedata.r6lib.R6Manager.CardType.CPUA;
 import static com.speedata.r6lib.R6Manager.CardType.CPUB;
 
 
 public class MainActivity extends Activity implements View.OnClickListener {
-    private EditText etShow,etCmdInput;
+
+    private EditText etShow;
+    private EditText etCmdInput;
     private TextView tvTitle;
     private IR6Manager mIR6Manager;
     private Button btnCmdIn;
-    private static String TAG="CPUA_B";
-    private Button btnInitdev,btnReleasedev,btnSearchcard,btnDeselect,btnExecrats;
-
+    private static String TAG = "CPUA_B";
+    private Button btnInitdev;
+    private Button btnReleasedev;
+    private Button btnSearchcard;
+    private Button btnDeselect;
+    private Button btnExecrats;
 
 
     @Override
@@ -48,24 +52,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
         Button btnMifareU = (Button) findViewById(R.id.mifare_u);
         btnCmdIn = (Button) findViewById(R.id.btn_cmd_in);
 
-
         etCmdInput = (EditText) findViewById(R.id.et_cmd_input);
 
-        btnInitdev=(Button)findViewById(R.id.btn_init_dev);//设备初始化上电
-        btnReleasedev= (Button) findViewById(R.id.btn_release_dev);//下电
-        btnSearchcard= (Button) findViewById(R.id.btn_search_card);//寻卡
-        btnDeselect= (Button) findViewById(R.id.btn_deselect);//移除卡片
-        btnExecrats= (Button) findViewById(R.id.btn_exec_rats);//读卡
+        btnInitdev = (Button) findViewById(R.id.btn_init_dev); //设备初始化上电
+        btnReleasedev = (Button) findViewById(R.id.btn_release_dev); //下电
+        btnSearchcard = (Button) findViewById(R.id.btn_search_card); //寻卡
+        btnDeselect = (Button) findViewById(R.id.btn_deselect); //移除卡片
+        btnExecrats = (Button) findViewById(R.id.btn_exec_rats); //读卡
 
-        etShow= (EditText) findViewById(R.id.et_show);//显示结果
+        etShow = (EditText) findViewById(R.id.et_show); //显示结果
         btnCpuA.setOnClickListener(this);
         btnCpuB.setOnClickListener(this);
         btnISO15693.setOnClickListener(this);
         btnMifare.setOnClickListener(this);
         btnMifareU.setOnClickListener(this);
         btnCmdIn.setOnClickListener(this);
-
-
 
         btnInitdev.setOnClickListener(this);
         btnReleasedev.setOnClickListener(this);
@@ -75,12 +76,12 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         setFalse();
         setCmdFalse();
-
-        etShow.setText("启动成功\n");
+        String startsuccess = getString(R.string.start_success) + "\n";
+        etShow.setText(startsuccess);
         getLast();
         try {
             Thread.sleep(100);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ignored) {
 
         }
     }
@@ -88,12 +89,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
     //将光标移动到最后显示最下面的信息.
     private void getLast() {
         Editable text = etShow.getText();
-        Spannable spanText = text;
-        Selection.setSelection(spanText, text.length());
+        Selection.setSelection(text, text.length());
     }
 
     //按钮配置
-    private void setFalse(){
+    private void setFalse() {
         btnInitdev.setEnabled(false);
         btnReleasedev.setEnabled(false);
         btnSearchcard.setEnabled(false);
@@ -101,7 +101,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
         btnExecrats.setEnabled(false);
 
     }
-    private void setTrue(){
+
+    private void setTrue() {
         btnInitdev.setEnabled(true);
         btnReleasedev.setEnabled(true);
         btnSearchcard.setEnabled(true);
@@ -109,11 +110,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
         btnExecrats.setEnabled(true);
 
     }
-    private void setCmdFalse(){
+
+    private void setCmdFalse() {
         etCmdInput.setEnabled(false);
         btnCmdIn.setEnabled(false);
     }
-    private void setCmdTrue(){
+
+    private void setCmdTrue() {
         etCmdInput.setEnabled(true);
         btnCmdIn.setEnabled(true);
 
@@ -121,11 +124,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.cpu_a:
                 mIR6Manager = R6Manager.getInstance(CPUA);
                 tvTitle.setText("");
-                tvTitle.append(getString(R.string.title_title)+getString(R.string.title_cpu_a));
+                tvTitle.append(getString(R.string.title_title) + getString(R.string.title_cpu_a));
                 etShow.append("CPU_A\n");
                 getLast();
                 setTrue();
@@ -133,7 +136,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.cpu_b:
                 mIR6Manager = R6Manager.getInstance(CPUB);
                 tvTitle.setText("");
-                tvTitle.append(getString(R.string.title_title)+getString(R.string.title_cpu_b));
+                tvTitle.append(getString(R.string.title_title) + getString(R.string.title_cpu_b));
                 etShow.append("CPU_B\n");
                 getLast();
                 setTrue();
@@ -157,102 +160,80 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.btn_init_dev:
                 int init = mIR6Manager.InitDevice();
-                etShow.append("上电:"+init +"\n");
+                String initdev = getString(R.string.power_on) + init + "\n";
+                etShow.append(initdev);
                 getLast();
                 break;
             case R.id.btn_release_dev:
                 mIR6Manager.ReleaseDevice();
-                etShow.append("已下电\n");
+                String release = getString(R.string.power_off) + "\n";
+                etShow.append(release);
                 getLast();
                 break;
             case R.id.btn_search_card:
                 byte[] sCard = mIR6Manager.SearchCard();
                 String sCards = "";
-                if (sCard == null){
-                    etShow.append("未搜到或移除已读卡片" +"\n");
+                if (sCard == null) {
+                    String notfound = getString(R.string.not_found) + "\n";
+                    etShow.append(notfound);
                     getLast();
                     return;
                 }
-                if (sCard !=null) {
+                if (sCard != null) {
                     for (byte i : sCard) {
                         sCards += String.format("%02X", i);
                     }
                 }
-                etShow.append(sCards +"\n");
+                etShow.append(sCards + "\n");
                 getLast();
                 break;
 
 
             case R.id.btn_deselect://将卡片移除有效范围
                 int outCard = mIR6Manager.Deselect();
-                etShow.append("移除卡片："+outCard+"\n");
+                String remove = getString(R.string.remove) + outCard + "\n";
+                etShow.append(remove);
                 getLast();
                 break;
 
             case R.id.btn_exec_rats:
                 byte[] eCard = mIR6Manager.ReadCard();
                 String eCards = "";
-                if (eCard == null){
-                    etShow.append("未能读取卡片信息" +"\n");
+                if (eCard == null) {
+                    String failread = getString(R.string.fail_read) + "\n";
+                    etShow.append(failread);
                     getLast();
                     return;
                 }
-                if (eCard !=null) {
+                if (eCard != null) {
                     for (byte i : eCard) {
                         eCards += String.format("%02X", i);
                     }
                 }
-                etShow.append(eCards +"\n");
+                etShow.append(eCards + "\n");
                 getLast();
                 setCmdTrue();
 
                 break;
             //命令输入
             case R.id.btn_cmd_in:
-
-//                StringTokenizer tk = new StringTokenizer(etCmdInput.getText().toString());
-//                int nums = tk.countTokens();
-////                if(nums < 4)
-////                {
-////                    tvTitle.setText("APDU CMD shoud have more than 4 bytes");
-////                    return;
-////                }
-//
-//                int index = 0;
-//                byte[] cm = new byte[nums];
-//                while(tk.hasMoreTokens())
-//                {
-//                    try {
-//                        cm[index++] = (byte)Integer.parseInt(tk.nextToken(), 16);
-//                        if(index == nums)
-//                            break;
-//                    }catch (NumberFormatException p) {
-//                        tvTitle.setText("Invalid char, cmd should formed by HEX number");
-//                    }
-//                }
-
-            	 String tk = etCmdInput.getText().toString();
-                 int len = tk.length();
-                 if (len % 2 != 0) {
-                     etShow.append("请确认命令是否正确" + "\n");
-                     return;
-                 }
-                 byte[] cm = DataConversionUtils.HexString2Bytes(tk);
-
+                String tk = etCmdInput.getText().toString();
+                int len = tk.length();
+                if (len % 2 != 0) {
+                    String makesure = getString(R.string.make_sure) + "\n";
+                    etShow.append(makesure);
+                    return;
+                }
+                byte[] cm = HexString2Bytes(tk);
                 byte[] xs = mIR6Manager.ExecCmdInput(cm); //lib命令调用
-
-                if(xs == null)
-                {
+                if (xs == null) {
                     tvTitle.setText("exchange l4 failed");
                     setCmdFalse();
                     mIR6Manager.ReleaseDevice();
-                }
-                else
-                {
+                } else {
                     Log.i(TAG, "cmd retured value begin");
                     String res = "";
-                    for(byte i : xs)
-                    {
+                    for (byte i : xs) {
                         res += String.format("%02x ", i);
                     }
                     etShow.append(res + "\n");
@@ -265,3 +246,5 @@ public class MainActivity extends Activity implements View.OnClickListener {
         }
     }
 }
+
+

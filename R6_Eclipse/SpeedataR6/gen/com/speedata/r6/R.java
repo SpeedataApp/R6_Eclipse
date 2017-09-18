@@ -82,8 +82,10 @@ public final class R {
         public static final int cpu_a=0x7f050001;
         public static final int cpu_b=0x7f050002;
         public static final int exec_rats=0x7f050007;
+        public static final int fail_read=0x7f05003e;
         public static final int init_dev=0x7f050004;
         public static final int iso_15693=0x7f05000a;
+        public static final int make_sure=0x7f05003f;
         public static final int message=0x7f050003;
         public static final int mifare=0x7f05000b;
         public static final int mifare_title=0x7f050010;
@@ -115,9 +117,14 @@ public final class R {
         public static final int msg_mifare_ok_readvalue=0x7f050030;
         public static final int msg_mifare_ok_writeblock=0x7f05002d;
         public static final int msg_mifare_ok_writevalue=0x7f05002f;
+        public static final int not_found=0x7f05003c;
+        public static final int power_off=0x7f05003b;
+        public static final int power_on=0x7f05003a;
         public static final int release_dev=0x7f050005;
+        public static final int remove=0x7f05003d;
         public static final int search_card=0x7f050006;
         public static final int show_window=0x7f050009;
+        public static final int start_success=0x7f050039;
         public static final int sure=0x7f050012;
         public static final int sure_cmd=0x7f050013;
         public static final int text_15693_prompt=0x7f050018;
