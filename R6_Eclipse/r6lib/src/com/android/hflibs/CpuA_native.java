@@ -42,7 +42,7 @@ public class CpuA_native {
 	
 	public byte[] exec_rats()
 	{
-		return palp4a_rats(8, 0);
+		return palp4a_rats(2, 0);
 	}
 	
 	public int haltc()
@@ -58,7 +58,7 @@ public class CpuA_native {
 	private native byte[] exchange_l4(int op, byte[] inbuf);			//add 2014.4.9
 	public native byte[] palp4a_rats(int bFsdi, int bCid);				//add 2014.4.9
 	//bFsdi：帧大小标识，取值0－8，对应的实际帧大小16－256字节。默认为0。
-	//bCid：卡标识，取值0－14。默认为0。
+		//bCid：卡标识，取值0－14。默认为0。
 	
 	static {
 		System.loadLibrary("rc663nxp-cpu");

@@ -3,6 +3,7 @@ package com.speedata.r6;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import android.text.Editable;
 import android.text.Selection;
 import android.util.Log;
