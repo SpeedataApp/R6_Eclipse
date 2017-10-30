@@ -4,24 +4,25 @@ import android.util.Log;
 
 import com.android.hflibs.CpuB_native;
 
+import java.util.Arrays;
+
 /**
  * Created by brxu on 2016/12/27.
  */
 
 public class CPU_TypeB implements IR6Manager {
-    private CpuB_native devB=new CpuB_native();
-    private static String TAG="CPUB";
+    private CpuB_native devB = new CpuB_native();
+    private static String TAG = "CPUB";
     private byte[][] nkB;
 
-    public String result="Œ¥∏ƒ∂Ø";
+    public String result = "Êú™ÊîπÂä®";
 
     public String AIDString;
     public String Aai;
 
     @Override
     public int InitDevice() {
-        if(devB.InitDevice() != 0)
-        {
+        if (devB.InitDevice() != 0) {
             return -1;
         }
 
@@ -36,53 +37,50 @@ public class CPU_TypeB implements IR6Manager {
 
     @Override
     public byte[] SearchCard() {
-        byte[] IDall=null;
+        byte[] IDall = null;
 
         byte[][] nk = devB.SearchCard();
-        if(nk == null)
-        {
-            result="À—≤ªµΩø®";
+        if (nk == null) {
+            result = "Êêú‰∏çÂà∞Âç°";
             return null;
         }
         byte[] ID = nk[0];
-        IDall=ID;
-        nkB=nk;
-        String IDStringB = new String("");
-        for(byte a : ID)
-        {
-            IDStringB += String.format("%02X", a);
+        IDall = ID;
+        nkB = nk;
+        StringBuilder IDStringB = new StringBuilder();
+        for (byte a : ID) {
+            IDStringB.append(String.format("%02X", a));
         }
-        AIDString=IDStringB;
+        AIDString= IDStringB.toString();
 
         return IDall;
     }
 
     @Override
     public int Deselect() {
-        int desall=0;
+        int desall = 0;
 
-        desall=devB.Deselect();
+        desall = devB.Deselect();
 
         return desall;
     }
 
     @Override
     public byte[] ReadCard() {
-        byte[] atsall=null;
+        byte[] atsall = null;
 
-        if (nkB==null){
-            result="√ª”– ˝æ›";
+        if (nkB == null) {
+            result = "Ê≤°ÊúâÊï∞ÊçÆ";
             return null;
         }
 
         byte[] ATQB = nkB[1];
-        atsall=ATQB;
-        String ATQBString = new String("");
-        for(byte a: ATQB)
-        {
-            ATQBString += String.format("%02X", a);
+        atsall = ATQB;
+        StringBuilder ATQBString = new StringBuilder();
+        for (byte a: ATQB) {
+            ATQBString.append(String.format("%02X", a));
         }
-        Aai=ATQBString;
+        Aai = ATQBString.toString();
 
         return atsall;
     }
@@ -92,9 +90,9 @@ public class CPU_TypeB implements IR6Manager {
     @Override
     public byte[] ExecCmdInput(byte[] input) {
 
-        byte[] execall=null;
+        byte[] execall = null;
         execall = devB.Exec_cmd(input);
-        Log.i(TAG,execall+"");
+        Log.i(TAG, Arrays.toString(execall));
         return execall;
     }
 
